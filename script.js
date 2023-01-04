@@ -37,9 +37,14 @@ function game(){
     let playerScore = 0
     let cpuScore = 0
     for (i = 0; i < 5; i++){      
-        let playerSelection = prompt("Rock, Paper, Scissors?").toUpperCase()
+        var playerSelection = prompt("Rock, Paper, Scissors?").toUpperCase()
+       
+        while (playerSelection !== "ROCK" && playerSelection !== "PAPER" && playerSelection !== "SCISSORS"){
+            alert("Please Enter Rock, Paper or Scissors")
+            var playerSelection = prompt("Rock, Paper, Scissors?").toUpperCase()           
+        }
+
         let computerSelection = getComputerChoice().toUpperCase()
-        
         let outCome = playRound(playerSelection, computerSelection)
 
         if (outCome.charAt(4) === "W"){
@@ -47,6 +52,7 @@ function game(){
         } else if (outCome.charAt(4) === "L"){
             cpuScore++
         }
+
         console.log("Round: " + (i + 1))
         console.log("Player: " + playerSelection + " Score: " + playerScore)
         console.log("Computer: " + computerSelection + " Score: " + cpuScore)
