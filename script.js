@@ -1,3 +1,15 @@
+const buttons = document.querySelectorAll('button');
+const result = document.querySelector('.result')
+const playerInput = document.getElementById('player-input')
+const computerInput = document.getElementById('computer-input')
+const playerScoreOutput = document.getElementById('player-score')
+const computerScoreOutput = document.getElementById('computer-score')
+const roundDisplay = document.getElementById('game-round')
+
+let playerScore = 0
+let cpuScore = 0
+let gameRound = 0
+
 function getComputerChoice(){
     let choice = Math.trunc(Math.random()*3) + 1;
     switch (choice){
@@ -14,17 +26,17 @@ function getComputerChoice(){
 }  
 
 function playRound(playerSelection, computerSelection){
-    if (playerSelection === "ROCK" && computerSelection === "SCISSORS"){
+    if (playerSelection === "Rock" && computerSelection === "Scissors"){
         return "You Win! Rock beats Scissors!"
-    } else if (playerSelection === "ROCK" && computerSelection === "PAPER"){
+    } else if (playerSelection === "Rock" && computerSelection === "Paper"){
         return "You Lose! Paper beats Rock!"
-    } else if (playerSelection === "PAPER" && computerSelection === "ROCK"){
+    } else if (playerSelection === "Paper" && computerSelection === "Rock"){
         return "You Win! Paper beats Rock!"
-    } else if (playerSelection === "PAPER" && computerSelection === "SCISSORS"){
+    } else if (playerSelection === "Paper" && computerSelection === "Scissors"){
         return "You Lose! Scissors beat Paper!"
-    } else if (playerSelection === "SCISSORS" && computerSelection === "ROCK"){
+    } else if (playerSelection === "Scissors" && computerSelection === "Rock"){
         return "You Lose! Rock beats Scissors!"
-    } else if (playerSelection === "SCISSORS" && computerSelection === "PAPER"){
+    } else if (playerSelection === "Scissors" && computerSelection === "Paper"){
         return "You Win! Scissors beats Paper"
     } else if (playerSelection === computerSelection){
         return "It is a Draw!"
@@ -33,36 +45,54 @@ function playRound(playerSelection, computerSelection){
     }
 }
 
-function game(){
-    let playerScore = 0
-    let cpuScore = 0
-    for (i = 0; i < 5; i++){      
-        var playerSelection = prompt("Rock, Paper, Scissors?").toUpperCase()
-       
-        while (playerSelection !== "ROCK" && playerSelection !== "PAPER" && playerSelection !== "SCISSORS"){
-            alert("Please Enter Rock, Paper or Scissors")
-            var playerSelection = prompt("Rock, Paper, Scissors?").toUpperCase()           
-        }
-
-        let computerSelection = getComputerChoice().toUpperCase()
-        let outCome = playRound(playerSelection, computerSelection)
-
-        if (outCome.charAt(4) === "W"){
-            playerScore++
-        } else if (outCome.charAt(4) === "L"){
-            cpuScore++
-        }
-
-        console.log("Round: " + (i + 1))
-        console.log("Player: " + playerSelection + " Score: " + playerScore)
-        console.log("Computer: " + computerSelection + " Score: " + cpuScore)
-        console.log(outCome)
+function updateScores(game){
+    if (game.charAt(4) === "W"){
+        playerScore++
+    } else if (game.charAt(4) === "L"){
+        cpuScore++
     }
-    if (playerScore > cpuScore){
-        console.log("You Won The Game!")
+    gameRound++
+
+    roundDisplay.textContent = "Round: " + gameRound
+    playerScoreOutput.textContent = playerScore
+    computerScoreOutput.textContent = cpuScore
+}
+
+function gameReset(){
+    console.log(gameRound)
+    if (gameRound === 5) {
+        if (playerScore > cpuScore){
+            alert("Well Done, you beat the computer! Play again?")
+        } else if (cpuScore > playerScore){
+            alert("You Lost! Better luck next time! Play again?")
+        } else {
+            alert("It is a tie! Play again?")
+        }
+        playerScore = 0
+        cpuScore = 0
+        gameRound = 0
+    
+        roundDisplay.textContent = "Round: " + gameRound
+        playerScoreOutput.textContent = playerScore
+        computerScoreOutput.textContent = cpuScore
+
+        playerInput.textContent = ''
+        computerInput.textContent = ''
+        result.textContent = ''
     } else {
-        console.log("You Lost The Game!")
+        return
     }
 }
 
-game()
+buttons.forEach((button) => {
+    button.addEventListener('click', () => {
+    computer = getComputerChoice()    
+    game = playRound(button.id, computer)
+    playerInput.textContent = button.id
+    computerInput.textContent = computer
+    result.textContent = game
+    updateScores(game)
+    gameReset()
+    });
+  });
+
