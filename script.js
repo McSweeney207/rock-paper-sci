@@ -5,10 +5,13 @@ const computerInput = document.getElementById('computer-input')
 const playerScoreOutput = document.getElementById('player-score')
 const computerScoreOutput = document.getElementById('computer-score')
 const roundDisplay = document.getElementById('game-round')
+const gamePlay = document.querySelector('.game-play')
+const endGame = document.querySelector('.end-game')
+const endResult = document.getElementById('end-result')
 
 let playerScore = 0
 let cpuScore = 0
-let gameRound = 0
+let gameRound = 1
 
 function getComputerChoice(){
     let choice = Math.trunc(Math.random()*3) + 1;
@@ -53,46 +56,56 @@ function updateScores(game){
     }
     gameRound++
 
-    roundDisplay.textContent = "Round: " + gameRound
     playerScoreOutput.textContent = playerScore
     computerScoreOutput.textContent = cpuScore
 }
 
-function gameReset(){
-    console.log(gameRound)
-    if (gameRound === 5) {
-        if (playerScore > cpuScore){
-            alert("Well Done, you beat the computer! Play again?")
-        } else if (cpuScore > playerScore){
-            alert("You Lost! Better luck next time! Play again?")
-        } else {
-            alert("It is a tie! Play again?")
-        }
-        playerScore = 0
-        cpuScore = 0
-        gameRound = 0
-    
-        roundDisplay.textContent = "Round: " + gameRound
-        playerScoreOutput.textContent = playerScore
-        computerScoreOutput.textContent = cpuScore
-
-        playerInput.textContent = ''
-        computerInput.textContent = ''
-        result.textContent = ''
+function endOfGame(){
+    if (playerScore === 5){
+        gamePlay.style.display = "none"
+        endGame.style.display = "block"
+        endResult.textContent = "Well Done, you beat the computer!"
+    } else if (cpuScore === 5){
+        gamePlay.style.display = "none"
+        endGame.style.display = "block"
+        endResult.textContent = "You Lost! Better luck next time!"
     } else {
         return
     }
 }
 
+function gameReset(){   
+    playerScore = 0
+    cpuScore = 0
+    gameRound = 1
+
+    gamePlay.style.display = "block"
+    endGame.style.display = "none"  
+
+    playerScoreOutput.textContent = playerScore
+    computerScoreOutput.textContent = cpuScore
+
+    
+    playerInput.textContent = ''
+    computerInput.textContent = ''
+    result.textContent = ''
+}
+
 buttons.forEach((button) => {
     button.addEventListener('click', () => {
-    computer = getComputerChoice()    
-    game = playRound(button.id, computer)
-    playerInput.textContent = button.id
-    computerInput.textContent = computer
-    result.textContent = game
-    updateScores(game)
-    gameReset()
+    
+    if (button.id === 'playAgain'){
+        gameReset()
+    } else {
+        computer = getComputerChoice()    
+        game = playRound(button.id, computer)
+    
+        playerInput.textContent = button.id
+        computerInput.textContent = computer
+        result.textContent = game
+        updateScores(game)
+        endOfGame()
+    }
     });
   });
 
