@@ -7,7 +7,6 @@ body {
     text-align: center;
 }
 
-
 button {
     background-color: #344977;
     height: 75px;
@@ -15,7 +14,7 @@ button {
     color: white;
     border: black 2px solid;
     font-size: 18px;
-    border-radius: 5px;;
+    border-radius: 5px;
 }
 
 button:hover {
@@ -28,5 +27,4 @@ button:hover {
 
 #end-result {
     font-size: 25px;
-
 }
